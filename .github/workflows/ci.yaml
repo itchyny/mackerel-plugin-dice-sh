@@ -1,0 +1,15 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  test:
+    name: Test
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@master
+    - name: Get metadata
+      run: MACKEREL_AGENT_PLUGIN_META=1 ./mackerel-plugin-dice
+    - name: Get metrics
+      run: ./mackerel-plugin-dice
