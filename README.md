@@ -13,9 +13,11 @@ command = "/path/to/mackerel-plugin-dice"
 brew install itchyny/tap/mackerel-plugin-dice
 ```
 
-### Build from source
+### Clone source
 ```bash
-go get -u github.com/itchyny/mackerel-plugin-dice
+git clone https://github.com/itchyny/mackerel-plugin-dice
+cd mackerel-plugin-dice/
+./mackerel-plugin-dice
 ```
 
 ## Bug Tracker
