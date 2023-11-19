@@ -5,29 +5,20 @@ on:
     tags:
     - 'v*'
 
+permissions:
+  contents: write
+
 jobs:
   release:
     name: Release
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@master
+      uses: actions/checkout@v4
     - name: Build artifact
       run: zip mackerel-plugin-dice.zip mackerel-plugin-dice README.md LICENSE
-    - name: Create Release
-      id: create_release
-      uses: actions/create-release@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Create release
+      uses: ncipollo/release-action@v1
       with:
-        tag_name: ${{ github.ref }}
-        release_name: Release ${{ github.ref }}
-    - name: Upload Release Asset
-      uses: actions/upload-release-asset@master
-      env:
-        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-      with:
-        upload_url: ${{ steps.create_release.outputs.upload_url }}
-        asset_path: ./mackerel-plugin-dice.zip
-        asset_name: mackerel-plugin-dice.zip
-        asset_content_type: application/zip
+        name: Release ${{ github.ref_name }}
+        artifacts: mackerel-plugin-dice.zip

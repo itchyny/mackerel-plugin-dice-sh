@@ -1,6 +1,13 @@
 name: CI
 
-on: [push, pull_request]
+on:
+  push:
+    branches:
+    - main
+  pull_request:
+
+permissions:
+  contents: read
 
 jobs:
   test:
@@ -8,7 +15,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - name: Checkout code
-      uses: actions/checkout@master
+      uses: actions/checkout@v4
+    - name: Run shellcheck
+      run: shellcheck mackerel-plugin-dice
     - name: Get metadata
       run: MACKEREL_AGENT_PLUGIN_META=1 ./mackerel-plugin-dice
     - name: Get metrics
