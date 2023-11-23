@@ -3,22 +3,46 @@ name: CI
 on:
   push:
     branches:
-    - main
+      - main
+    tags:
+      - v*
   pull_request:
 
 permissions:
   contents: read
 
+defaults:
+  run:
+    shell: bash --noprofile --norc -euxo pipefail {0}
+
 jobs:
   test:
-    name: Test
     runs-on: ubuntu-latest
     steps:
-    - name: Checkout code
-      uses: actions/checkout@v4
-    - name: Run shellcheck
-      run: shellcheck mackerel-plugin-dice
-    - name: Get metadata
-      run: MACKEREL_AGENT_PLUGIN_META=1 ./mackerel-plugin-dice
-    - name: Get metrics
-      run: ./mackerel-plugin-dice
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Run shellcheck
+        run: shellcheck mackerel-plugin-dice
+      - name: Get metadata
+        run: ./mackerel-plugin-dice
+        env:
+          MACKEREL_AGENT_PLUGIN_META: 1
+      - name: Get metrics
+        run: ./mackerel-plugin-dice
+
+  release:
+    needs: test
+    if: startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: Build artifact
+        run: zip mackerel-plugin-dice_${{ github.ref_name }}.zip README.md LICENSE mackerel-plugin-dice
+      - name: Create release
+        uses: ncipollo/release-action@v1
+        with:
+          name: Release ${{ github.ref_name }}
+          artifacts: mackerel-plugin-dice_*.zip
