@@ -1,27 +1,11 @@
-# mackerel-plugin-dice
-Dice plugin for Mackerel.
+# Dice plugin for Mackerel written in shell script
+This is a shell script port of [Ruby plugin sample in the official document](https://mackerel.io/docs/entry/advanced/custom-metrics#graph-schema-example-ruby).
 
-## Setting
-```
-[plugin.metrics.dice]
-command = "/path/to/mackerel-plugin-dice"
-```
-
-## Installation
-### Homebrew
 ```sh
-brew install itchyny/tap/mackerel-plugin-dice
+ $ ./mackerel-plugin-dice
+dice.d6	2	1700745566
+dice.d20	14	1700745566
 ```
-
-### Clone source
-```bash
-git clone https://github.com/itchyny/mackerel-plugin-dice
-cd mackerel-plugin-dice/
-./mackerel-plugin-dice
-```
-
-## Bug Tracker
-Report bug at [Issues・itchyny/mackerel-plugin-dice - GitHub](https://github.com/itchyny/mackerel-plugin-dice/issues).
 
 ## Author
 itchyny (https://github.com/itchyny)
